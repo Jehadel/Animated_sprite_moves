@@ -6,7 +6,7 @@ player.y = 5 * TILE_SIZE
 player.vx = 0
 player.vy = 0
 player.acceleration = 200 -- with a pixel precision control
-player.friction = 550   -- we can have basics physics parameters 
+player.friction = 1000   -- we can have basics physics parameters 
 player.maxspeed = 200  -- for more realistics (and fun) movements
 player.sp_l = 1
 player.sp_c = 1
@@ -102,14 +102,13 @@ function love.update(dt)
   -- save the sprite position for repositionning
   player.x_old = player.x
   player.y_old = player.y
-
   -- speed update, wich sets the direction of the player
       
   if love.keyboard.isDown("up") then
     player.sp_l = 1
     player.vy = player.vy - player.acceleration * dt
-    if player.vy > player.maxspeed then
-      player.vy = player.maxspeed
+    if player.vy < - player.maxspeed then
+      player.vy = - player.maxspeed
     end
 
   elseif love.keyboard.isDown("right") then
@@ -122,8 +121,8 @@ function love.update(dt)
   elseif love.keyboard.isDown("down") then
     player.sp_l = 3
     player.vy = player.vy + player.acceleration * dt
-    if player.vy < -player.maxspeed then
-        player.vy = -player.maxspeed
+    if player.vy > player.maxspeed then
+        player.vy = player.maxspeed
     end
 
   elseif love.keyboard.isDown("left") then
@@ -179,9 +178,17 @@ function love.update(dt)
   -- it prevents glitches due to repositionning
   
   local collide = (player.vx > 0 
-                    and collideTest(player, player.right_limit, player.top_limit, player.right_limit, player.bottom_limit))  -- collision Right side (top/bottom)
+                    and collideTest(player, 
+                      player.right_limit, 
+                      player.top_limit, 
+                      player.right_limit, 
+                      player.bottom_limit))  -- collision Right side (top/bottom)
                   or (player.vx < 0 
-                   and collideTest(player, player.left_limit, player.top_limit, player.left_limit, player.bottom_limit)) -- collision Left side (top/bottom)
+                   and collideTest(player, 
+                      player.left_limit, 
+                      player.top_limit, 
+                      player.left_limit, 
+                      player.bottom_limit)) -- collision Left side (top/bottom)
   if collide == true then
     player.vx = 0
     player.x = player.x_old
@@ -189,9 +196,17 @@ function love.update(dt)
   end
 
   collide = (player.vy < 0 
-              and collideTest(player, player.left_limit, player.top_limit, player.right_limit, player.top_limit)) -- collision Top (left/right)
+              and collideTest(player, 
+                player.left_limit, 
+                player.top_limit, 
+                player.right_limit, 
+                player.top_limit)) -- collision Top (left/right)
             or (player.vy > 0 
-              and collideTest(player, player.left_limit, player.bottom_limit, player.right_limit, player.bottom_limit)) -- collision Bottom (left/right)
+              and collideTest(player, 
+                player.left_limit, 
+                player.bottom_limit, 
+                player.right_limit, 
+                player.bottom_limit)) -- collision Bottom (left/right)
   if collide == true then
     player.vy = 0
     player.x = player.x_old
@@ -228,10 +243,8 @@ function love.draw()
   love.graphics.setColor(255, 0, 0)
   love.graphics.print("Player.x :"..tostring(player.x), 10, 10)
   love.graphics.print("Player.y :"..tostring(player.y), 10, 30)
-  love.graphics.print("Player.c :"..tostring(player.c), 10, 50)
-  love.graphics.print("Player.c_cible :"..tostring(player.c_cible), 10, 70)
-  love.graphics.print("Player.l :"..tostring(player.l), 10, 90)
-  love.graphics.print("Player.l_cible :"..tostring(player.l_cible), 10, 110)
+  love.graphics.print("Player.vx :"..tostring(player.vx), 10, 50)
+  love.graphics.print("Player.vy :"..tostring(player.vy), 10, 70)
   love.graphics.setColor(1, 1, 1)
 
 end

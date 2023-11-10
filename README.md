@@ -8,6 +8,8 @@ Each folder of this project contains a different method to move a sprite.
 
 3. __The pixel by pixel method :__ the sprite can be controlled and therefore positionned by one pixel precision. Collision tests get more complicated.
 
+I added an intertia/grip effect, just to show how it works, a bit exagerated and unrealistic (grip is zero as long as you don’t release keys).
+
 ## Launch demos :
 
 Demos uses [Löve2D](https://love2d.org/).
