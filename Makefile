@@ -5,7 +5,7 @@ TxP:
 	love ./Move_TilexPixel
 
 PxP:
-	love ./Move_PixelxPidel
+	love ./Move_PixelxPixel
 
 #love:
 #	mkdir -p dist
